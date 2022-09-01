@@ -1,4 +1,5 @@
 using Exercicios.Data;
+using Exercicios.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContextFactory<M3S1DbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("M3S1Db"))
 );
+
+builder.Services.AddScoped<IBandaRepository, BandaRepository>();
 
 var app = builder.Build();
 
