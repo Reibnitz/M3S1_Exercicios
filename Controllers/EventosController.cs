@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Exercicios.Data.Dtos.Evento;
+using Exercicios.Models;
+using Exercicios.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Exercicios.Controllers
@@ -7,29 +10,70 @@ namespace Exercicios.Controllers
     [ApiController]
     public class EventosController : ControllerBase
     {
+        private readonly EventoService _eventoService;
+
+        public EventosController(EventoService eventoService)
+        {
+            _eventoService = eventoService;
+        }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok();
+            try
+            {
+                IList<ReadEventoDto> eventos = _eventoService.Get();
+                return eventos.Any() ? Ok(eventos) : NotFound();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+            }
         }
 
         [HttpPost]
-        public IActionResult Post()
+        public IActionResult Post(CreateEventoDto createEventoDto)
         {
-            return Ok();
+            try
+            {
+                ReadEventoDto readEventoDto = _eventoService.Post(createEventoDto);
+
+                return CreatedAtAction(nameof(Get), new { Id = readEventoDto.Id}, readEventoDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+            }
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put()
+        public IActionResult Put(int id, [FromBody] UpdateEventoDto updateEventoDto)
         {
-            return Ok();
+            try
+            {
+                bool hasBeenUpdated = _eventoService.Put(id, updateEventoDto);
+
+                return hasBeenUpdated ? NoContent() : BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+            }
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete()
+        public IActionResult Delete(int id)
         {
-            return Ok();
+            try
+            {
+                bool hasBeenDeleted = _eventoService.Delete(id);
+        
+                return hasBeenDeleted ? NoContent() : BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+            }
         }
     }
 }
