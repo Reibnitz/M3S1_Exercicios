@@ -49,7 +49,7 @@ namespace Exercicios.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(CreateBandaDto createBandaDto)
+        public IActionResult Post([FromBody] CreateBandaDto createBandaDto)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace Exercicios.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, UpdateBandaDto bandaDto)
+        public IActionResult Put(int id, [FromBody] UpdateBandaDto bandaDto)
         {
             try
             {
