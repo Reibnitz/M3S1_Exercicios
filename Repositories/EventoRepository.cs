@@ -14,19 +14,14 @@ namespace Exercicios.Repositories
             _dbContextFactory = dbContextFactory;
         }
 
-        public bool Delete(int id)
+        public void Delete(int id)
         {
             using (var context = _dbContextFactory.CreateDbContext())
             {
                 EventoModel evento = context.Eventos.FirstOrDefault(evento => evento.Id == id);
 
-                if (evento == null)
-                    return false;
-
                 context.Eventos.Remove(evento);
                 context.SaveChanges();
-
-                return true;
             }
         }
 
@@ -64,6 +59,11 @@ namespace Exercicios.Repositories
                 
                 return model.Id;
             }
+        }
+
+        void IRepository<EventoModel>.Delete(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

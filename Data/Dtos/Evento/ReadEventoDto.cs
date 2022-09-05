@@ -14,6 +14,8 @@ namespace Exercicios.Data.Dtos.Evento
 
         public DateTime Data { get; set; }
 
+        public int TipoEvento { get; set; }
+
         [ForeignKey("Banda")]
         public int BandaId { get; set; }
 
